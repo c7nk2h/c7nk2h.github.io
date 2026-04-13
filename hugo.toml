@@ -1,0 +1,22 @@
+baseURL = "https://c7nk2h.github.io/"
+theme = "blowfish"
+defaultContentLanguage = "de"
+
+[languages.de]
+  languageName = "Deutsch"
+  contentDir = "content/de"
+  [languages.de.params]
+    displayName = "DE"
+
+[languages.en]
+  languageName = "English"
+  contentDir = "content/en"
+  [languages.en.params]
+    displayName = "EN"
+
+[params]
+  # Das macht die Seite sauber und schnell
+  colorScheme = "blowfish" # oder "ocean", "forest"
+  defaultAppearance = "dark" # "light" oder "dark"
+  showSummary = true
+  showTaxonomies = true
