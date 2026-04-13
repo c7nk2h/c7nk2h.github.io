@@ -9,6 +9,10 @@ defaultContentLanguage = "de"
     weight = 1
     [languages.de.menu]
       [[languages.de.menu.main]]
+        name = "Startseite"
+        url = "/"
+        weight = 1
+      [[languages.de.menu.main]]
         name = "Projekte"
         url = "projects/"
         weight = 10
@@ -17,6 +21,10 @@ defaultContentLanguage = "de"
     languageName = "English"
     weight = 2
     [languages.en.menu]
+      [[languages.en.menu.main]]
+        name = "Home"
+        url = "/"
+        weight = 1
       [[languages.en.menu.main]]
         name = "Projects"
         url = "projects/"
