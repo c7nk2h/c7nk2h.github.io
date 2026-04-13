@@ -1,22 +1,28 @@
 baseURL = "https://c7nk2h.github.io/"
-theme = "blowfish"
+theme = "PaperMod"
+languageCode = "de"
 defaultContentLanguage = "de"
 
-[languages.de]
-  languageName = "Deutsch"
-  contentDir = "content/de"
-  [languages.de.params]
-    displayName = "DE"
+[languages]
+  [languages.de]
+    languageName = "Deutsch"
+    weight = 1
+    [languages.de.menu]
+      [[languages.de.menu.main]]
+        name = "Projekte"
+        url = "projects/"
+        weight = 10
 
-[languages.en]
-  languageName = "English"
-  contentDir = "content/en"
-  [languages.en.params]
-    displayName = "EN"
+  [languages.en]
+    languageName = "English"
+    weight = 2
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        name = "Projects"
+        url = "projects/"
+        weight = 10
 
 [params]
-  # Das macht die Seite sauber und schnell
-  colorScheme = "blowfish" # oder "ocean", "forest"
-  defaultAppearance = "dark" # "light" oder "dark"
-  showSummary = true
-  showTaxonomies = true
+  env = "production"
+  # Zeigt auf der Startseite dein Profil statt der Artikelliste
+  profileMode = { enabled = true, title = "Hallo!", subtitle = "Willkommen in meinem Portfolio." }
