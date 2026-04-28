@@ -17,6 +17,7 @@ weight: 2  # Sortierreihenfolge (niedriger = früher)
 
 Du möchtest deinen Konsum im Blick behalten — aber keine App installieren, die deine Daten auf einen Server schickt? Alcotrac ist anders.
 
+🍻 **[Alcotrac starten](#)**
 ## Deine Daten bleiben auf deinem Handy. Punkt.
 
 Alcotrac läuft **komplett auf deinem Gerät**. Kein Server, kein Account, keine Cloud. Nichts wird hochgeladen, nichts wird analysiert, nichts wird verkauft.

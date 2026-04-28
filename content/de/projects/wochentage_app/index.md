@@ -13,7 +13,7 @@ author: "Chris"
 weight: 1  # Sortierreihenfolge (niedriger = früher)
 ---
 
-# Wochentag-Trainer: Die App zum Üben von Kopfrechnen
+# Wochentag-Trainer: Übe Wochentage zu berechnen - im Kopf
 
 Der Wochentag-Trainer ist eine praktische Anwendung, die dir hilft, den Wochentag für beliebige Daten im Kopf zu berechnen. Diese App ist besonders wertvoll für alle, die ihre Kopfrechenfähigkeiten trainieren möchten oder einfach neugierig auf die Wochentagsberechnung sind.
 
