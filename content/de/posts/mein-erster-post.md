@@ -2,11 +2,11 @@
 title: "Hallo"
 date: 2026-04-13
 draft: false
-description: "Eine Beschreibung für SEO"
+description: ""
 tags: ["hugo", "static-site", "web"]
 categories: ["tutorials", "web-development"]
 keywords: ["hugo", "tutorial"]
-author: "Dein Name"
+author: "Chis"
 weight: 1  # Sortierreihenfolge (niedriger = früher)
 ---
 
@@ -14,4 +14,4 @@ weight: 1  # Sortierreihenfolge (niedriger = früher)
 
 Willkommen auf meiner Website.
 
-Noch ist hier nicht viel Inhalt aber es wird mehr. Checke meine Projekt aus: 
+Noch ist hier nicht viel Inhalt aber es wird mehr. Checke meine Projekt aus!

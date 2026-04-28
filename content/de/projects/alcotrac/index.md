@@ -5,7 +5,7 @@ cover:
     alt: "Vorschau meiner App"
 date: 2026-04-13
 draft: false
-description: "Eine Beschreibung für SEO"
+description: ""
 tags: ["hugo", "static-site", "web"]
 categories: ["tutorials", "web-development"]
 keywords: ["hugo", "tutorial"]
