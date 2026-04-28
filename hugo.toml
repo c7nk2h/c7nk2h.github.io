@@ -6,6 +6,9 @@ disableLanguagesToggle = true
 
 hasCJKLanguage = false
 
+[markup.goldmark.renderer]
+  unsafe = true
+
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 
@@ -26,9 +29,17 @@ hasCJKLanguage = false
       url = "posts/"
       weight = 20
     [[languages.de.menu.main]]
+      name = "Über mich"
+      url = "pages/about_me/"
+      weight = 40
+    [[languages.de.menu.main]]
+      name = "Kontakt"
+      url = "pages/contact/"
+      weight = 50
+    [[languages.de.menu.main]]
       name = "search"
       url = "search/"
-      weight = 30
+      weight = 60
 
 # English language - disabled until content is added
 # [languages.en]
