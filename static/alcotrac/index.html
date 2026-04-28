@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f0f13">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Alcotrac</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>🍻 Alcotrac</h1>
+      <!-- Progress Ring + Level Badge -->
+      <div class="progress-header" id="progressHeader">
+        <div class="progress-ring-wrap" title="Diese Woche im Vergleich zu deinem Durchschnitt">
+          <svg class="progress-ring" width="48" height="48" viewBox="0 0 48 48">
+            <circle class="progress-ring-bg" cx="24" cy="24" r="20" fill="none" stroke="var(--surface2)" stroke-width="4"/>
+            <circle class="progress-ring-fill" id="progressRingFill" cx="24" cy="24" r="20" fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-dasharray="125.66" stroke-dashoffset="125.66" transform="rotate(-90 24 24)"/>
+          </svg>
+          <span class="progress-ring-label" id="progressRingLabel">?</span>
+        </div>
+        <div class="level-badge" id="levelBadge" title="Dein aktueller Rang">Neuling</div>
+      </div>
+
+      <nav class="tabs" id="tabs" role="tablist" aria-label="Hauptnavigation">
+        <button class="tab active" data-tab="today" role="tab" aria-selected="true" aria-controls="todayView" title="Tagesübersicht">Heute</button>
+        <button class="tab" data-tab="stats" role="tab" aria-selected="false" aria-controls="statsView" title="Fortschritt &amp; Statistik">Stats</button>
+        <button class="tab" data-tab="archive" role="tab" aria-selected="false" aria-controls="archiveView" title="Verlauf aller Tage">Archiv</button>
+      </nav>
+    </header>
+
+    <!-- Today View -->
+    <section class="view" id="todayView">
+      <section class="summary" id="summary">
+        <div class="stat" title="Anzahl der heute getrunkenen Getränke">
+          <span class="stat-value" id="totalDrinks">0</span>
+          <span class="stat-label">Getrunken</span>
+        </div>
+        <div class="stat" title="Gesamtmenge reiner Alkohol in Gramm">
+          <span class="stat-value" id="totalAlcohol">0 g</span>
+          <span class="stat-label">Alkohol</span>
+        </div>
+        <div class="stat" title="Alkoholeinheiten (1 Einheit = 10g reiner Alkohol)">
+          <span class="stat-value" id="totalUnits">0</span>
+          <span class="stat-label">Einheiten</span>
+        </div>
+        <div class="stat bac-stat" id="bacStat" title="Geschätzte Blutalkoholkonzentration in Promille">
+          <span class="stat-value" id="bacValue">—</span>
+          <span class="stat-label">Promille</span>
+        </div>
+        <div class="stat water-stat" title="Anzahl der heute getrunkenen Wassergläser">
+          <span class="stat-value" id="totalWater">0</span>
+          <span class="stat-label">Wasser</span>
+        </div>
+      </section>
+
+      <section class="drink-buttons">
+        <button class="drink-btn beer" data-type="Bier" data-emoji="🍺" data-vol="500" data-abv="4.8" title="0,5l Bier mit 4,8% Alkohol · Lang drücken zum Anpassen">
+          <span class="btn-emoji">🍺</span>
+          <span class="btn-name">Bier</span>
+          <span class="btn-detail">0,5l · 4,8%</span>
+        </button>
+        <button class="drink-btn wine" data-type="Wein" data-emoji="🍷" data-vol="200" data-abv="12" title="0,2l Wein mit 12% Alkohol · Lang drücken zum Anpassen">
+          <span class="btn-emoji">🍷</span>
+          <span class="btn-name">Wein</span>
+          <span class="btn-detail">0,2l · 12%</span>
+        </button>
+        <button class="drink-btn schnaps" data-type="Schnaps" data-emoji="🥃" data-vol="40" data-abv="40" title="4cl Schnaps mit 40% Alkohol · Lang drücken zum Anpassen">
+          <span class="btn-emoji">🥃</span>
+          <span class="btn-name">Schnaps</span>
+          <span class="btn-detail">4cl · 40%</span>
+        </button>
+        <button class="drink-btn longdrink" data-type="Longdrink" data-emoji="🍹" data-vol="300" data-abv="15" title="0,3l Longdrink mit 15% Alkohol · Lang drücken zum Anpassen">
+          <span class="btn-emoji">🍹</span>
+          <span class="btn-name">Longdrink</span>
+          <span class="btn-detail">0,3l · 15%</span>
+        </button>
+      </section>
+
+      <!-- Water Button -->
+      <section class="water-section">
+        <button class="water-btn" id="waterBtn" title="Wasser trinken · Tappe für 250ml, lang drücken für eigene Menge">
+          <span class="btn-emoji">💧</span>
+          <span class="btn-name">Wasser</span>
+          <span class="btn-detail" id="waterBtnDetail">+1 Glas (250ml)</span>
+        </button>
+      </section>
+
+      <section class="log">
+        <div class="log-header">
+          <h2>📋 <span id="todayDate">Heute</span></h2>
+          <button class="reset-btn" id="resetBtn">🗑 Alles löschen</button>
+        </div>
+        <ul class="log-list" id="logList">
+          <li class="empty-msg">Noch nichts getrunken. Prost! 🍻</li>
+        </ul>
+      </section>
+    </section>
+
+    <!-- Stats View -->
+    <section class="view hidden" id="statsView">
+      <section class="level-detail" id="levelDetail">
+        <div class="level-info">
+          <span class="level-name" id="levelName">Neuling</span>
+          <span class="level-desc" id="levelDesc">Du hast angefangen zu tracken</span>
+        </div>
+        <div class="level-progress-wrap">
+          <div class="level-progress-bar" id="levelProgressBar">
+            <div class="level-progress-fill" id="levelProgressFill" style="width: 0%"></div>
+          </div>
+          <span class="level-progress-label" id="levelProgressLabel">0% zum nächsten Level</span>
+        </div>
+      </section>
+
+      <section class="weekly-chart-section">
+        <div class="log-header">
+          <h2>📊 Woche</h2>
+        </div>
+        <div class="weekly-chart" id="weeklyChart">
+          <div class="chart-placeholder" id="chartPlaceholder">Noch zu wenig Daten für einen Vergleich.</div>
+          <div class="chart-bars hidden" id="chartBars">
+            <div class="chart-bar-group">
+              <div class="chart-bar-label">Letzte Woche</div>
+              <div class="chart-bar" id="chartBarLast">
+                <div class="chart-bar-fill" id="chartBarLastFill" style="height: 0%"></div>
+              </div>
+              <div class="chart-bar-value" id="chartBarLastValue">0 E.</div>
+            </div>
+            <div class="chart-bar-group">
+              <div class="chart-bar-label">Diese Woche</div>
+              <div class="chart-bar" id="chartBarCurrent">
+                <div class="chart-bar-fill" id="chartBarCurrentFill" style="height: 0%"></div>
+              </div>
+              <div class="chart-bar-value" id="chartBarCurrentValue">0 E.</div>
+            </div>
+          </div>
+          <div class="chart-arrow hidden" id="chartArrow"></div>
+          <div class="chart-average" id="chartAverage"></div>
+        </div>
+      </section>
+
+      <section class="water-weekly-section">
+        <div class="log-header">
+          <h2>💧 Wasser diese Woche</h2>
+        </div>
+        <div class="water-weekly-bars" id="waterWeeklyBars">
+          <div class="water-day-bar" id="waterDayMo">
+            <div class="water-day-label">Mo</div>
+            <div class="water-day-count" id="waterDayMoCount">0</div>
+          </div>
+          <div class="water-day-bar" id="waterDayDi">
+            <div class="water-day-label">Di</div>
+            <div class="water-day-count" id="waterDayDiCount">0</div>
+          </div>
+          <div class="water-day-bar" id="waterDayMi">
+            <div class="water-day-label">Mi</div>
+            <div class="water-day-count" id="waterDayMiCount">0</div>
+          </div>
+          <div class="water-day-bar" id="waterDayDo">
+            <div class="water-day-label">Do</div>
+            <div class="water-day-count" id="waterDayDoCount">0</div>
+          </div>
+          <div class="water-day-bar" id="waterDayFr">
+            <div class="water-day-label">Fr</div>
+            <div class="water-day-count" id="waterDayFrCount">0</div>
+          </div>
+          <div class="water-day-bar" id="waterDaySa">
+            <div class="water-day-label">Sa</div>
+            <div class="water-day-count" id="waterDaySaCount">0</div>
+          </div>
+          <div class="water-day-bar" id="waterDaySo">
+            <div class="water-day-label">So</div>
+            <div class="water-day-count" id="waterDaySoCount">0</div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Archive View -->
+    <section class="view hidden" id="archiveView">
+      <section class="archive-stats" id="archiveStats">
+      <div class="stat" title="Anzahl der heute getrunkenen Getränke">
+          <span class="stat-value" id="totalDrinks">0</span>
+          <span class="stat-label">Getrunken</span>
+        </div>
+        <div class="stat" title="Gesamtmenge reiner Alkohol in Gramm">
+          <span class="stat-value" id="totalAlcohol">0 g</span>
+          <span class="stat-label">Alkohol</span>
+        </div>
+        <div class="stat" title="Alkoholeinheiten (1 Einheit = 10g reiner Alkohol)">
+          <span class="stat-value" id="totalUnits">0</span>
+          <span class="stat-label">Einheiten</span>
+        </div>
+        <div class="stat bac-stat" id="bacStat" title="Geschätzte Blutalkoholkonzentration in Promille">
+          <span class="stat-value" id="bacValue">—</span>
+          <span class="stat-label">Promille</span>
+        </div>
+        <div class="stat water-stat" title="Anzahl der heute getrunkenen Wassergläser">
+          <span class="stat-value" id="totalWater">0</span>
+          <span class="stat-label">Wasser</span>
+        </div>
+   <div class="stat" title="Anzahl der heute getrunkenen Getränke">
+          <span class="stat-value" id="totalDrinks">0</span>
+          <span class="stat-label">Getrunken</span>
+        </div>
+        <div class="stat" title="Gesamtmenge reiner Alkohol in Gramm">
+          <span class="stat-value" id="totalAlcohol">0 g</span>
+          <span class="stat-label">Alkohol</span>
+        </div>
+        <div class="stat" title="Alkoholeinheiten (1 Einheit = 10g reiner Alkohol)">
+          <span class="stat-value" id="totalUnits">0</span>
+          <span class="stat-label">Einheiten</span>
+        </div>
+        <div class="stat bac-stat" id="bacStat" title="Geschätzte Blutalkoholkonzentration in Promille">
+          <span class="stat-value" id="bacValue">—</span>
+          <span class="stat-label">Promille</span>
+        </div>
+        <div class="stat water-stat" title="Anzahl der heute getrunkenen Wassergläser">
+          <span class="stat-value" id="totalWater">0</span>
+          <span class="stat-label">Wasser</span>
+        </div>
+     <div class="stat" title="Anzahl der heute getrunkenen Getränke">
+          <span class="stat-value" id="totalDrinks">0</span>
+          <span class="stat-label">Getrunken</span>
+        </div>
+        <div class="stat" title="Gesamtmenge reiner Alkohol in Gramm">
+          <span class="stat-value" id="totalAlcohol">0 g</span>
+          <span class="stat-label">Alkohol</span>
+        </div>
+        <div class="stat" title="Alkoholeinheiten (1 Einheit = 10g reiner Alkohol)">
+          <span class="stat-value" id="totalUnits">0</span>
+          <span class="stat-label">Einheiten</span>
+        </div>
+        <div class="stat bac-stat" id="bacStat" title="Geschätzte Blutalkoholkonzentration in Promille">
+          <span class="stat-value" id="bacValue">—</span>
+          <span class="stat-label">Promille</span>
+        </div>
+        <div class="stat water-stat" title="Anzahl der heute getrunkenen Wassergläser">
+          <span class="stat-value" id="totalWater">0</span>
+          <span class="stat-label">Wasser</span>
+        </div>
+    <div class="stat" title="Anzahl der heute getrunkenen Getränke">
+          <span class="stat-value" id="totalDrinks">0</span>
+          <span class="stat-label">Getrunken</span>
+        </div>
+        <div class="stat" title="Gesamtmenge reiner Alkohol in Gramm">
+          <span class="stat-value" id="totalAlcohol">0 g</span>
+          <span class="stat-label">Alkohol</span>
+        </div>
+        <div class="stat" title="Alkoholeinheiten (1 Einheit = 10g reiner Alkohol)">
+          <span class="stat-value" id="totalUnits">0</span>
+          <span class="stat-label">Einheiten</span>
+        </div>
+        <div class="stat bac-stat" id="bacStat" title="Geschätzte Blutalkoholkonzentration in Promille">
+          <span class="stat-value" id="bacValue">—</span>
+          <span class="stat-label">Promille</span>
+        </div>
+        <div class="stat water-stat" title="Anzahl der heute getrunkenen Wassergläser">
+          <span class="stat-value" id="totalWater">0</span>
+          <span class="stat-label">Wasser</span>
+        </div>
+      </section>
+
+      <section class="archive-detail" id="archiveDetail" style="display:none;">
+        <div class="archive-back-header">
+          <button class="back-btn" id="archiveBackBtn">← Zurück</button>
+          <h2 id="archiveDayTitle"></h2>
+        </div>
+        <ul class="log-list" id="archiveLogList"></ul>
+      </section>
+
+      <section class="archive-list-section" id="archiveListSection">
+        <div class="log-header">
+          <h2>📅 Verlauf</h2>
+          <button class="archive-delete-btn" id="deleteArchiveBtn">🗑 Archiv löschen</button>
+        </div>
+        <ul class="archive-list" id="archiveList">
+          <li class="empty-msg">Noch kein Archiv vorhanden.</li>
+        </ul>
+      </section>
+    </section>
+  </div>
+
+  <div class="modal-backdrop hidden" id="waterModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="waterModalTitle">
+      <h3 id="waterModalTitle">💧 Wassermenge</h3>
+      <div class="edit-form">
+        <div class="form-group">
+          <label for="waterVol">Menge (ml)</label>
+          <input type="number" id="waterVol" inputmode="numeric" min="1" max="5000" step="10" value="250">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="waterCancel">Abbrechen</button>
+        <button class="btn-primary" id="waterSave">Trinken!</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="editModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+      <h3 id="editModalTitle">Menge anpassen</h3>
+      <div class="edit-form">
+        <div class="form-group">
+          <label for="editVol">Menge (ml)</label>
+          <input type="number" id="editVol" inputmode="numeric" min="1" max="5000" step="10">
+        </div>
+        <div class="form-group">
+          <label for="editAbv">Alkohol (%)</label>
+          <input type="number" id="editAbv" inputmode="decimal" min="0.1" max="100" step="0.1">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="editCancel">Abbrechen</button>
+        <button class="btn-primary" id="editSave">Trinken!</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="deleteModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3 id="deleteModalTitle">Alles löschen?</h3>
+      <p>Der gesamte Tagesverlauf wird gelöscht.</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="deleteCancel">Abbrechen</button>
+        <button class="btn-danger" id="deleteConfirm">Löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="deleteArchiveModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3 id="deleteArchiveModalTitle">Archiv löschen?</h3>
+      <p>Alle gespeicherten Tage werden unwiderruflich gelöscht.</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="deleteArchiveCancel">Abbrechen</button>
+        <button class="btn-danger" id="deleteArchiveConfirm">Löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="onboardModal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3 id="onboardModalTitle">🍻 Willkommen bei Alcotrac</h3>
+      <p>Gib deine Daten ein für eine Promille-Schätzung.</p>
+      <div class="edit-form">
+        <div class="form-group">
+          <label for="onboardWeight">Gewicht (kg)</label>
+          <input type="number" id="onboardWeight" inputmode="numeric" min="30" max="250" step="1" value="75">
+        </div>
+        <div class="form-group">
+          <label for="onboardGender">Geschlecht</label>
+          <select id="onboardGender">
+            <option value="male">Männlich</option>
+            <option value="female">Weiblich</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="onboardSkip">Überspringen</button>
+        <button class="btn-primary" id="onboardSave">Los geht's!</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

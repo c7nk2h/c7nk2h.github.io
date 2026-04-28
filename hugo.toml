@@ -2,35 +2,33 @@ baseURL = "https://c7nk2h.github.io/"
 theme = "PaperMod"
 languageCode = "de"
 defaultContentLanguage = "de"
+disableLanguagesToggle = true
+
+hasCJKLanguage = false
 
 [languages]
   [languages.de]
     languageName = "Deutsch"
+    contentDir = "content/de"
     weight = 1
-    [languages.de.menu]
-      [[languages.de.menu.main]]
-        name = "Startseite"
-        url = "/"
-        weight = 1
-      [[languages.de.menu.main]]
-        name = "Projekte"
-        url = "projects/"
-        weight = 10
+    [[languages.de.menu.main]]
+      name = "Projekte"
+      url = "projects/"
+      weight = 10
+    [[languages.de.menu.main]]
+      name = "Blog"
+      url = "posts/"
+      weight = 20
 
   [languages.en]
     languageName = "English"
+    contentDir = "content/en"
     weight = 2
-    [languages.en.menu]
-      [[languages.en.menu.main]]
-        name = "Home"
-        url = "/"
-        weight = 1
-      [[languages.en.menu.main]]
-        name = "Projects"
-        url = "projects/"
-        weight = 10
-
-[params]
-  env = "production"
-  # Zeigt auf der Startseite dein Profil statt der Artikelliste
-  profileMode = { enabled = true, title = "Hallo!", subtitle = "Willkommen in meinem Portfolio." }
+    [[languages.en.menu.main]]
+      name = "Projects"
+      url = "projects/"
+      weight = 10
+    [[languages.en.menu.main]]
+      name = "Blog"
+      url = "posts/"
+      weight = 20

@@ -1,0 +1,6 @@
+# .gitignore für Hugo
+/public/
+resources/
+tmp/
+*.tmp
+.DS_Store

@@ -1,0 +1,1039 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #0f0f13;
+  --surface: #1a1a24;
+  --surface2: #24243a;
+  --text: #eeeef0;
+  --text-dim: #8888a0;
+  --accent: #f0a500;
+  --accent-glow: rgba(240, 165, 0, 0.25);
+  --danger: #e74c5f;
+  --beer: #f59e0b;
+  --wine: #a855f7;
+  --schnaps: #f97316;
+  --longdrink: #06b6d4;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --water: #06b6d4;
+  --water-glow: rgba(6, 182, 212, 0.25);
+  --safe: #4ade80;
+}
+
+html {
+  font-size: 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  padding-bottom: env(safe-area-inset-bottom, 24px);
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-top: max(16px, env(safe-area-inset-top));
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 12px 0 20px;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-top: 12px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  max-width: 240px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab.active {
+  background: var(--accent);
+  color: #000;
+}
+
+.tab:hover:not(.active) {
+  color: var(--text);
+}
+
+/* Views */
+.view.hidden {
+  display: none;
+}
+
+/* Summary */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 400px) {
+  .summary {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.stat {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 14px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.stat-value.bac-safe { color: var(--safe); }
+.stat-value.bac-warn { color: var(--accent); }
+.stat-value.bac-danger { color: var(--danger); }
+.water-stat .stat-value { color: var(--water); }
+
+.stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+}
+
+/* Drink Buttons */
+.drink-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.drink-btn {
+  background: var(--surface);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.2s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.drink-btn:active {
+  transform: scale(0.95);
+}
+
+.drink-btn.beer { --btn-color: var(--beer); }
+.drink-btn.wine { --btn-color: var(--wine); }
+.drink-btn.schnaps { --btn-color: var(--schnaps); }
+.drink-btn.longdrink { --btn-color: var(--longdrink); }
+
+.drink-btn:hover,
+.drink-btn:focus-visible {
+  border-color: var(--btn-color);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--btn-color) 30%, transparent);
+}
+
+.btn-emoji {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.btn-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.btn-detail {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* Log */
+.log {
+  margin-top: 8px;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.log-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.reset-btn {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.reset-btn:hover,
+.reset-btn:focus-visible {
+  background: rgba(231, 76, 95, 0.15);
+}
+
+.log-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty-msg {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 32px 16px;
+  font-size: 0.95rem;
+}
+
+.log-entry {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  animation: slideIn 0.25s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.log-entry .entry-emoji {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.log-entry .entry-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.log-entry .entry-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.log-entry .entry-detail {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.log-entry .entry-time {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.log-entry .entry-alcohol {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  flex-shrink: 0;
+  text-align: right;
+  min-width: 48px;
+}
+
+.log-entry .delete-entry {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  padding: 6px 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.log-entry .delete-entry:hover,
+.log-entry .delete-entry:focus-visible {
+  color: var(--danger);
+  background: rgba(231, 76, 95, 0.15);
+}
+
+/* Modals */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 100;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.modal-backdrop.hidden {
+  display: none;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+  width: 100%;
+  max-width: 480px;
+  animation: slideUp 0.25s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal p {
+  text-align: center;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.form-group input {
+  background: var(--surface2);
+  border: 2px solid var(--surface2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.form-group input:focus {
+  border-color: var(--accent);
+}
+
+.form-group select {
+  background: var(--surface2);
+  border: 2px solid var(--surface2);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238888a0' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.form-group select:focus {
+  border-color: var(--accent);
+}
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  padding: 16px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.btn-danger:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+}
+
+.btn-secondary {
+  background: var(--surface2);
+  color: var(--text);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* Tablet and up */
+@media (min-width: 600px) {
+  .app {
+    padding: 24px;
+  }
+
+  .drink-btn {
+    padding: 28px 16px;
+  }
+
+  .btn-emoji {
+    font-size: 3rem;
+  }
+
+  .btn-name {
+    font-size: 1.2rem;
+  }
+
+  .modal {
+    border-radius: var(--radius);
+    margin-bottom: 20%;
+  }
+
+  .modal-backdrop {
+    align-items: center;
+  }
+}
+
+/* Landscape / small height */
+@media (max-height: 600px) {
+  header {
+    padding: 8px 0 12px;
+  }
+
+  .summary {
+    margin-bottom: 16px;
+  }
+
+  .drink-buttons {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .drink-btn {
+    padding: 14px 10px;
+  }
+
+  .btn-emoji {
+    font-size: 1.8rem;
+  }
+}
+
+/* Haptic feedback preference */
+@media (prefers-reduced-motion: reduce) {
+  .log-entry {
+    animation: none;
+  }
+  .modal {
+    animation: none;
+  }
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface2);
+  border-radius: 4px;
+}
+
+/* Error toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--danger);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 200;
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Archive */
+.archive-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 400px) {
+  .archive-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.archive-list-section h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.archive-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.archive-day {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.archive-day:active {
+  transform: scale(0.98);
+}
+
+.archive-day:hover {
+  background: var(--surface2);
+}
+
+.archive-day-date {
+  flex-shrink: 0;
+  text-align: center;
+  min-width: 48px;
+}
+
+.archive-day-day {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.archive-day-month {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.archive-day-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.archive-day-drinks {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.archive-day-detail {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.archive-day-bar {
+  flex-shrink: 0;
+  width: 60px;
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.archive-day-bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.archive-day-bar-fill.warn {
+  background: #f59e0b;
+}
+
+.archive-day-bar-fill.danger {
+  background: var(--danger);
+}
+
+/* Archive detail */
+.archive-back-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.back-btn {
+  background: var(--surface);
+  border: none;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: var(--surface2);
+}
+
+.archive-back-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Archive delete button */
+.archive-delete-btn {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.archive-delete-btn:hover,
+.archive-delete-btn:focus-visible {
+  background: rgba(231, 76, 95, 0.15);
+}
+
+/* ===== Tooltips ===== */
+[title] {
+  position: relative;
+}
+
+[title]:hover::after,
+[title]:focus-visible::after {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface2);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  animation: tooltipIn 0.15s ease forwards;
+}
+
+[title]:hover::before,
+[title]:focus-visible::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--surface2);
+  z-index: 50;
+  opacity: 0;
+  animation: tooltipIn 0.15s ease forwards;
+}
+
+@keyframes tooltipIn {
+  to { opacity: 1; }
+}
+
+/* Prevent tooltip overflow on edges */
+.stat[title]:hover::after,
+.stat[title]:focus-visible::after {
+  white-space: normal;
+  max-width: 180px;
+  text-align: center;
+}
+
+/* ===== Gamification ===== */
+
+/* 1. Progress Header (ring + level badge) */
+.progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.progress-ring-wrap {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-fill {
+  transition: stroke-dashoffset 0.6s ease, stroke 0.3s ease;
+}
+
+.progress-ring-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.level-badge {
+  background: var(--surface);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--accent-glow);
+}
+
+/* 2. Water Button */
+.water-section {
+  margin-bottom: 20px;
+}
+
+.water-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.2s, box-shadow 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.water-btn:active {
+  transform: scale(0.97);
+}
+
+.water-btn:hover,
+.water-btn:focus-visible {
+  border-color: var(--water);
+  box-shadow: 0 0 20px var(--water-glow);
+}
+
+/* 3. Level Detail (Stats tab) */
+.level-detail {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.level-info {
+  margin-bottom: 16px;
+}
+
+.level-name {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.level-desc {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.level-progress-wrap {
+  margin-top: 12px;
+}
+
+.level-progress-bar {
+  height: 8px;
+  background: var(--surface2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.level-progress-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+/* 4. Weekly Chart */
+.weekly-chart-section {
+  margin-bottom: 24px;
+}
+
+.weekly-chart {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.chart-placeholder {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 20px;
+  font-size: 0.9rem;
+}
+
+.chart-bars {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 24px;
+  min-height: 120px;
+}
+
+.chart-bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-bar-label {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.chart-bar {
+  width: 100%;
+  max-width: 80px;
+  height: 100px;
+  background: var(--surface2);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.chart-bar-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--accent);
+  border-radius: 8px;
+  transition: height 0.5s ease;
+}
+
+.chart-bar-fill.below { background: var(--safe); }
+.chart-bar-fill.above { background: var(--danger); }
+
+.chart-bar-value {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.chart-arrow {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 12px;
+}
+
+.chart-arrow.down { color: var(--safe); }
+.chart-arrow.up { color: var(--danger); }
+.chart-arrow.even { color: var(--text-dim); }
+
+.chart-average {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* 5. Water Weekly Bars */
+.water-weekly-section {
+  margin-bottom: 24px;
+}
+
+.water-weekly-bars {
+  display: flex;
+  gap: 8px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.water-day-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 4px;
+  background: var(--surface2);
+  border-radius: 8px;
+}
+
+.water-day-label {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.water-day-count {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--water);
+}
+
+.water-day-bar.today {
+  border: 1px solid var(--water);
+}
+
+/* 6. Responsive adjustments for tablet */
+@media (min-width: 600px) {
+  .progress-header {
+    margin-top: 16px;
+  }
+
+  .water-btn {
+    padding: 20px 16px;
+  }
+
+  .chart-bar {
+    height: 140px;
+  }
+}

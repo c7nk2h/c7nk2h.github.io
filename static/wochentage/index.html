@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-de="Wochentag-Trainer" data-en="Weekday Trainer">Wochentag-Trainer</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; background: #f0f2f5; padding: 20px; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 400px; width: 100%; text-align: center; }
+        h1 { color: #1a73e8; font-size: 1.5rem; }
+        .date-display { font-size: 2rem; font-weight: bold; margin: 20px 0; color: #202124; }
+        button { background: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; margin: 5px; }
+        button:hover { background: #1557b0; }
+        .solution { margin-top: 20px; padding: 15px; background: #e8f0fe; border-radius: 8px; display: none; text-align: left; font-size: 0.9rem; }
+        .codes-table { font-size: 0.75rem; margin-top: 20px; color: #5f6368; border-top: 1px solid #ddd; padding-top: 10px; }
+        #lang-switcher { padding: 5px; margin-bottom: 10px; font-size: 1rem; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <select id="lang-switcher">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+    </select>
+    
+    <h1 data-de="📅 Wochentag-Trainer" data-en="📅 Weekday Trainer">📅 Wochentag-Trainer</h1>
+    <p data-de="Berechne den Wochentag für:" data-en="Calculate the weekday for:">Berechne den Wochentag für:</p>
+    <div class="date-display" id="target-date">--.--.----</div>
+    
+    <button onclick="generateDate()" data-de="Neues Datum" data-en="New Date">Neues Datum</button>
+    <button onclick="toggleSolution()" style="background: #34a853;" data-de="Lösung zeigen" data-en="Show solution">Lösung zeigen</button>
+
+    <div id="solution-box" class="solution">
+        <strong><span data-de="Ergebnis:" data-en="Result:">Ergebnis:</span> <span id="res-weekday" style="color: #d93025;"></span></strong><br><br>
+        <small id="res-calc"></small>
+    </div>
+
+    <div class="codes-table">
+        <p><strong data-de="Monatscodes:" data-en="Month codes:">Monatscodes:</strong><br>
+        <span data-de="Jan: 0 | Feb: 3 | März: 3 | Apr: 6 | Mai: 1 | Jun: 4<br>Jul: 6 | Aug: 2 | Sep: 5 | Okt: 0 | Nov: 3 | Dez: 5" data-en="Jan: 0 | Feb: 3 | Mar: 3 | Apr: 6 | May: 1 | Jun: 4<br>Jul: 6 | Aug: 2 | Sep: 5 | Oct: 0 | Nov: 3 | Dec: 5">Jan: 0 | Feb: 3 | März: 3 | Apr: 6 | Mai: 1 | Jun: 4<br>Jul: 6 | Aug: 2 | Sep: 5 | Okt: 0 | Nov: 3 | Dez: 5</span></p>
+        <p><i data-de="Tipp: Bei Jan/Feb im Schaltjahr -1 rechnen!" data-en="Tip: For Jan/Feb in leap year calculate -1!">Tipp: Bei Jan/Feb im Schaltjahr -1 rechnen!</i></p>
+    </div>
+</div>
+
+<script>
+    // Translations
+    const translations = {
+        de: {
+            title: "Wochentag-Trainer",
+            heading: "📅 Wochentag-Trainer",
+            description: "Berechne den Wochentag für:",
+            newDateBtn: "Neues Datum",
+            showSolutionBtn: "Lösung zeigen",
+            result: "Ergebnis:",
+            monthCodes: "Jan: 0 | Feb: 3 | Mär: 3 | Apr: 6 | Mai: 1 | Jun: 4<br>Jul: 6 | Aug: 2 | Sep: 5 | Okt: 0 | Nov: 3 | Dez: 5",
+            tip: "Tipp: Bei Jan/Feb im Schaltjahr -1 rechnen!",
+            calc: {
+                day: "Tag:",
+                monthCode: "Monatscode:",
+                year: "Jahr:",
+                leapYears: "Schaltjahre:",
+                centuryCode: "Jh-Code:",
+                leapYearCorrection: "Schaltjahr-Korrektur:",
+                sum: "Summe:"
+            },
+            months: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
+            weekdays: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+        },
+        en: {
+            title: "Weekday Trainer",
+            heading: "📅 Weekday Trainer",
+            description: "Calculate the weekday for:",
+            newDateBtn: "New Date",
+            showSolutionBtn: "Show solution",
+            result: "Result:",
+            monthCodes: "Jan: 0 | Feb: 3 | Mar: 3 | Apr: 6 | May: 1 | Jun: 4<br>Jul: 6 | Aug: 2 | Sep: 5 | Oct: 0 | Nov: 3 | Dec: 5",
+            tip: "Tip: For Jan/Feb in leap year calculate -1!",
+            calc: {
+                day: "Day:",
+                monthCode: "Month code:",
+                year: "Year:",
+                leapYears: "Leap years:",
+                centuryCode: "Century code:",
+                leapYearCorrection: "Leap year correction:",
+                sum: "Sum:"
+            },
+            months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        }
+    };
+
+    const monthCodes = [0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5];
+
+    // Language detection
+    function detectLanguage() {
+        // Check localStorage first
+        const savedLang = localStorage.getItem('preferredLang');
+        if (savedLang && (savedLang === 'de' || savedLang === 'en')) {
+            return savedLang;
+        }
+        
+        // Detect browser language
+        const browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang && browserLang.toLowerCase().startsWith('de')) {
+            return 'de';
+        }
+        return 'en'; // Default to English for all other cases
+    }
+
+    // Current language
+    let currentLang = detectLanguage();
+
+    // Month and weekday arrays for generateDate and calculate
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    // Update UI based on language
+    function updateTexts() {
+        const t = translations[currentLang];
+        
+        // Update title
+        document.title = t.title;
+        document.documentElement.lang = currentLang;
+        
+        // Update elements with data-de and data-en attributes
+        document.querySelectorAll('[data-de][data-en]').forEach(el => {
+            el.textContent = el.getAttribute(`data-${currentLang}`);
+        });
+        
+        // Update month codes display
+        document.querySelector('.codes-table span').innerHTML = t.monthCodes;
+        
+        // Update tip
+        document.querySelector('.codes-table i').textContent = t.tip;
+        
+        // Update calculation display if solution is shown
+        if (document.getElementById('solution-box').style.display === 'block' && Object.keys(currentDate).length > 0) {
+            updateCalculationDisplay();
+        }
+    }
+
+    // Update calculation display with current language
+    function updateCalculationDisplay() {
+        const t = translations[currentLang];
+        const { d, m, y } = currentDate;
+        const yy = y % 100;
+        const sj = Math.floor(yy / 4);
+        const jh = 6;
+        const mc = monthCodes[m];
+        const sum = d + mc + yy + sj + jh;
+        
+        let correction = 0;
+        if (isLeapYear(y) && m < 2) {
+            correction = -1;
+        }
+        
+        const resultIndex = (sum % 7 + 7) % 7;
+        
+        const calcHTML = `
+            ${t.calc.day} ${d}<br>
+            ${t.calc.monthCode}: ${mc}<br>
+            ${t.calc.year} (${yy}): ${yy}<br>
+            ${t.calc.leapYears} (${sj}): ${sj}<br>
+            ${t.calc.centuryCode}: ${jh}<br>
+            ${correction !== 0 ? t.calc.leapYearCorrection + ' -1<br>' : ''}
+            <b>${t.calc.sum}: ${sum} → Modulo 7 = ${resultIndex}</b>
+        `;
+        
+        document.getElementById('res-calc').innerHTML = calcHTML;
+        document.getElementById('res-weekday').innerText = translations[currentLang].weekdays[resultIndex];
+    }
+
+    let currentDate = {};
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    }
+
+    function generateDate() {
+        document.getElementById('solution-box').style.display = 'none';
+        const year = Math.floor(Math.random() * (2099 - 2000 + 1)) + 2000;
+        const month = Math.floor(Math.random() * 12);
+        
+        // Days per month (index 0 = January, etc.)
+        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        
+        // Adjust February for leap years
+        if (isLeapYear(year)) {
+            daysInMonth[1] = 29;
+        }
+        
+        const day = Math.floor(Math.random() * daysInMonth[month]) + 1;
+        
+        currentDate = { d: day, m: month, y: year };
+        document.getElementById('target-date').innerText = `${day}. ${translations[currentLang].months[month]} ${year}`;
+        calculate();
+    }
+
+    function calculate() {
+        const { d, m, y } = currentDate;
+        const yy = y % 100;
+        const sj = Math.floor(yy / 4);
+        const jh = 6;
+        const mc = monthCodes[m];
+        
+        let sum = d + mc + yy + sj + jh;
+        let correction = 0;
+        if (isLeapYear(y) && m < 2) {
+            correction = -1;
+            sum -= 1;
+        }
+
+        const resultIndex = (sum % 7 + 7) % 7;
+        
+        document.getElementById('res-weekday').innerText = translations[currentLang].weekdays[resultIndex];
+        document.getElementById('res-calc').innerHTML = `
+            ${translations[currentLang].calc.day} ${d}<br>
+            ${translations[currentLang].calc.monthCode}: ${mc}<br>
+            ${translations[currentLang].calc.year} (${yy}): ${yy}<br>
+            ${translations[currentLang].calc.leapYears} (${sj}): ${sj}<br>
+            ${translations[currentLang].calc.centuryCode}: ${jh}<br>
+            ${correction !== 0 ? translations[currentLang].calc.leapYearCorrection + ' -1<br>' : ''}
+            <b>${translations[currentLang].calc.sum}: ${sum} → Modulo 7 = ${resultIndex}</b>
+        `;
+    }
+
+    function toggleSolution() {
+        const box = document.getElementById('solution-box');
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Event listener for language switcher
+    document.getElementById('lang-switcher').addEventListener('change', (e) => {
+        currentLang = e.target.value;
+        localStorage.setItem('preferredLang', currentLang);
+        updateTexts();
+        if (document.getElementById('solution-box').style.display === 'block') {
+            updateCalculationDisplay();
+        }
+        // Regenerate date to show new language in display
+        generateDate();
+    });
+
+    // Initialize language and start
+    updateTexts();
+    generateDate();
+</script>
+
+</body>
+</html>
