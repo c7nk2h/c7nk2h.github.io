@@ -17,7 +17,8 @@ weight: 2  # Sortierreihenfolge (niedriger = früher)
 
 Du möchtest deinen Konsum im Blick behalten — aber keine App installieren, die deine Daten auf einen Server schickt? Alcotrac ist anders.
 
-🍻 **[Alcotrac starten](#)**
+🍻 **[Alcotrac starten](/alcotrac/index.html)**
+
 ## Deine Daten bleiben auf deinem Handy. Punkt.
 
 Alcotrac läuft **komplett auf deinem Gerät**. Kein Server, kein Account, keine Cloud. Nichts wird hochgeladen, nichts wird analysiert, nichts wird verkauft.
@@ -114,10 +115,10 @@ Du musst es nicht machen. Wenn du es überspringst, zeigt die App einfach „—
 
 Kein Account. Keine E-Mail. Kein „Erstelle dein Profil". Einfach tracken.
 
-🍻 **[Alcotrac starten](#)**
+🍻 **[Alcotrac starten](/alcotrac/index.html)**
 
 ---
 
 *Deine Daten. Dein Gerät. Dein Tempo.*
 
-Hier geht es zur [Alcotrac App](/alcotrac/index.html).
+
